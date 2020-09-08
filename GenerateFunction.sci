@@ -3,11 +3,11 @@ function [out]= GenerateSin(f, len_t, fs)
     out = sin(t * (2 * %pi) * f)
 endfunction
 
-function [out] = dft(x, fs)
-    omega = 1:fs;
+function [out] = dft(x, f_limit)
+    omega = 1:f_limit;
     for o = omega
         n = 0:length(x) - 1;
-        out(o) = x * exp(-%i * 2 * %pi * o * n / length(n)).'
+        out(o) = abs(x * exp(-%i * 2 * %pi * o * n / length(n)).')
     end
 endfunction
 
