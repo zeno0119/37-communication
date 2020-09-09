@@ -1,5 +1,5 @@
 function [out]= GenerateSin(f, len_t, fs)
-    t = 0:1 / fs:len_t
+    t = 0:1 / fs:len_t - 1/ fs
     out = sin(t * (2 * %pi) * f)
 endfunction
 
