@@ -3,6 +3,11 @@ function [out]= GenerateSin(f, len_t, fs)
     out = sin(t * (2 * %pi) * f)
 endfunction
 
+function [out] = GenerateSinary(f_ary, len_t, fs)
+    t = 0:1 / fs: len_t - 1/ fs;
+    out = sin(f_ary.' * (2 * %pi) * t)
+endfunction
+
 function [out] = dft(x, f_limit)
     omega = 1:f_limit;
     for o = omega
