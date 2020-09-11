@@ -1,4 +1,4 @@
-exec("../GenerateFunction.sci")
+exec("./GenerateFunction.sci")
 
 function [bitary] = BitEncoder(str)
     // A-Z%sをビット列に変換する部分
@@ -9,7 +9,7 @@ function [bitary] = BitEncoder(str)
     for i = 1:length(str)
         bitary = cat(1, bitary, alp_to_tf_table(find(tf_to_alp_table == vec(i)), :))
     end
-    bitary = cat(1, bitary, repmat([%f], num - mod, bitscale / 2))
+    bitary = cat(1, bitary, repmat([%f], num - mod, bitscale))
 endfunction
 
 function [out] = WaveTransmitter(bitary)
@@ -35,5 +35,5 @@ function [muxBit] = BitMultiPlexer(bitary)
 endfunction
 
 function [wave] = Encoder(str)
-    wave = WaveTransmitter(BitMultiPlexer(BitEncoder(str)))
+    wave = WaveTransmitter(BitEncoder(str))
 endfunction

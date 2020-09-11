@@ -1,5 +1,6 @@
 function [noise] = add_noise(wave)
-    noise = wave + rand(1, length(wave), "normal")
+    noise_ = rand(1, length(wave), "normal")
+    noise = wave + noise_
 endfunction
 
 function [echo] = add_echo(wave)

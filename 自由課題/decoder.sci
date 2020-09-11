@@ -1,5 +1,3 @@
-exec("../GenerateFunction.sci")
-
 function [wave] = DeconvFilt(waveform)
     //最初の1秒のデータを切り出して逆畳み込みフィルタを形成して送る
     t = (0:0.8 * fs - 1)/fs
@@ -20,17 +18,19 @@ function [bitary] = WaveReceiver(waveform, th)
     //逆畳み込みフィルタを作成して適用
     // waveform = DeconvFilt(waveform)
     //とりあえずlen_t秒ごとにデータを切り出して計算
-    
+    z = poly(0, "z")
+    p = z^-96 / (1 - 0.9 * z^-96) //コムフィルタ
     n = 1:bitscale;
     //plot(abs(fft(waveform)) ** 2)
     bitary = []
     for i = 0:length(waveform) / fs / len_t - 1
-        target = waveform(i * fs * len_t + 1: (i + 1) * fs * len_t);
+        target = repmat(waveform(i * fs * len_t + 1: (i + 1) * fs * len_t), [1, 1/ len_t]);
+        target = flts(target, p)
         target_f = 20 * log10(abs(fft(target)) ** 2);
-        if i == 2
-            plot(target_f)
+        if i == 0
+//            plot(target_f)
         end
-        freq_ary = (find(target_f >= 49) - 1) / len_t
+        freq_ary = (find(target_f >= th) - 1)
         //disp("66dB以上の所", freq_ary)
         freq_ary = freq_ary(find(freq_ary <= f_base * n($)))
 //        disp("lower than 2500Hz", freq_ary)
@@ -57,7 +57,11 @@ endfunction
 function [bitary] = BitdeMultiPlexer(muxBit)
     bitary = []
     for i = 1:length(muxBit(:, 1))
-        bitary = cat(1, bitary, muxBit(i, 1:$/2), muxBit(i, $/2+1:$))
+        bitary = cat(1, bitary, muxBit(i, 1:$ / 2), muxBit(i, $/2+1:$))
     end
+endfunction
+
+function [str] = Decoder(waveform)
+    str = BitDecoder(WaveReceiver(waveform))
 endfunction
 
