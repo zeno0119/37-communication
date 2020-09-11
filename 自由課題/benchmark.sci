@@ -13,11 +13,9 @@ waveform = Encoder(str);
 transmit_delay = toc()
 
 //ノイズを付与
-noise = add_noise(waveform)
+//noise = add_noise(waveform)
 //エコーを付与
 //noise = add_echo(waveform)
-
-wavwrite(waveform, 48000, "out.wav")
 
 tic()
 ret_str = Decoder(noise);
