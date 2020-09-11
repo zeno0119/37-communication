@@ -14,7 +14,8 @@ function [wave] = DeconvFilt(waveform)
 endfunction
 
 
-function [bitary] = WaveReceiver(waveform, th)
+function [bitary] = WaveReceiver(waveform)
+    waveform = waveform / max(waveform)
     //逆畳み込みフィルタを作成して適用
     // waveform = DeconvFilt(waveform)
     //とりあえずlen_t秒ごとにデータを切り出して計算
@@ -23,12 +24,12 @@ function [bitary] = WaveReceiver(waveform, th)
     n = 1:bitscale;
     //plot(abs(fft(waveform)) ** 2)
     bitary = []
-    for i = 0:length(waveform) / fs / len_t - 1
+    for i = 0:(length(waveform) / fs / len_t) - 1
         target = repmat(waveform(i * fs * len_t + 1: (i + 1) * fs * len_t), [1, 1/ len_t]);
         target = flts(target, p)
         target_f = 20 * log10(abs(fft(target)) ** 2);
         if i == 0
-//            plot(target_f)
+            //plot(target_f)
         end
         freq_ary = (find(target_f >= th) - 1)
         //disp("66dB以上の所", freq_ary)

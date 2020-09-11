@@ -9,7 +9,9 @@ function [bitary] = BitEncoder(str)
     for i = 1:length(str)
         bitary = cat(1, bitary, alp_to_tf_table(find(tf_to_alp_table == vec(i)), :))
     end
-    bitary = cat(1, bitary, repmat([%f], num - mod, bitscale))
+    if mod ~= 0
+        bitary = cat(1, bitary, repmat([%f], num - mod, bitscale))
+    end
 endfunction
 
 function [out] = WaveTransmitter(bitary)

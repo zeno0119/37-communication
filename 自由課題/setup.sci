@@ -3,7 +3,7 @@ f_base = 500;
 len_t = 0.04;
 bitscale = 5;
 len_alp = 5;
-th = 179;
+th = 150;
 
 alp_to_tf_table = [%f, %f, %f, %f, %t
 %f, %f, %f, %t, %f
@@ -40,6 +40,6 @@ alp_to_tf_table = [%f, %f, %f, %f, %t
 
 tf_to_alp_table = strsplit("ABCDEFGHIJKLMNOPQRSTUVWXYZ .,!?-")
 
-exec("./encode.sci")
+exec("./encoder.sci")
 exec("./decoder.sci")
 exec("./channel.sci")
